@@ -6,29 +6,16 @@ from bs4 import BeautifulSoup as bsoup
 
 # 定数
 # TODO Baseに変換
-const.url = "http://www.nhk.or.jp/kamado/recipe.html"
+const.baseUrl = "http://www.nhk.or.jp/kamado/"
+const.recipeUrl = const.baseUrl + "recipe.html" 
 const.recipeTableColumns = ["OnAir", "url", "title"]
 
 """
-    全てのレシピを返す
+    レシピを取得
 """
-def getAllRecipeTable() :
-    soup = getBeautifulSoup()
-    pastRecipeTable = getPastRecipeTable(soup)
-    # newRecipeTable = getNewRecipe(soup)
-        
-    return
-
-"""
-    過去のレシピを取得
-"""
-def getPastRecipeTable(soup = None) :
+def getRecipeDF() :
     
-    recipeTable = pd.DataFrame(columns=const.recipeTableColumns)
-
-    # 引数がない場合はsoupを取得
-    if soup is None :
-        soup = getBeautifulSoup()
+    soup = getBeautifulSoup()
 
     ul = soup.find("ul", class_="recipeTable")
 
@@ -39,27 +26,18 @@ def getPastRecipeTable(soup = None) :
     )
 
     # DataFrameにまとめる
-    recipeTable = ( pd.DataFrame(
+    recipedf = ( pd.DataFrame(
         [ func(i, li.find_all("p")) for i, li in enumerate(ul.find_all("li"))], 
         columns=const.recipeTableColumns)
     )
-    return recipeTable
-
-
-"""
-    直近のレシピを取得
-"""
-def getNewRecipe(soup = None) :
-    if soup is None :
-        soup = getBeautifulSoup()
-    return 
+    return recipedf
 
 """
     かまどのURLを受け取ってBeautifulSoupを返す
 """
 def getBeautifulSoup() :
     # リクエストの設定
-    req = urllib.request.Request(const.url)
+    req = urllib.request.Request(const.baseUrl)
     soup = None
 
     # リクエストを投げる

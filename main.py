@@ -1,7 +1,7 @@
 import scraping
 
 def main() :
-    scraping.getAllRecipeTable()
+    print(scraping.getRecipeDF())
     return
 
 if __name__ == "__main__" :
